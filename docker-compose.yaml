@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: zan_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zan
+      MYSQL_USER: zan
+      MYSQL_PASSWORD: zan
+    ports:
+      - 3306:3306
+    volumes:
+      - ./.dev/docker/mysql/data:/var/lib/mysql
+    restart: always
+  redis:
+    image: redis:7.2
+    container_name: zan_redis
+    command: ['redis-server', '/etc/redis/redis.conf']
+    ports:
+      - 6379:6379
+    volumes:
+      - ./.dev/docker/redis/data:/data
+      - ./.dev/docker/redis/config:/etc/redis
+    restart: always
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: zan_rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./.dev/docker/rabbitmq/data:/var/lib/rabbitmq
